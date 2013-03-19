@@ -1,0 +1,339 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+@import "blueprint/form";
+@import "blueprint/typography";
+
+@import "partials/variables";
+@import "partials/mixins";
+
+@import "compass/reset";
+@import "compass/css3";
+@import "compass/utilities";
+@import "compass/layout/sticky-footer";
+
+@include sticky-footer($footerHeight); // See http://compass-style.org/reference/compass/layout/sticky_footer/ for documentation
+
+body {
+    background: $bodyBackground;
+    font-family: Arial;
+    min-width: $bodyMinWidth;
+}
+
+aside {
+    position: absolute;
+    left: $asideLeft;
+    width: $asideWidth;
+    color: $asideColor;
+    text-align: center;
+    
+    * {
+        color: $asideColor !important;
+    }
+    
+    > div {
+        margin-bottom: $asideMarginBottom;
+        padding: $asidePadding;
+        @include redGradient;
+        @include border-radius(0.5em);
+    }
+    
+    #logo {
+        @include border-radius(0 0 0.5em 0.5em);
+    }
+    img {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    
+    a {
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+    }
+}
+
+header {
+    clear: both;
+    background: $headerBackground;
+    padding-left: $mainPaddingLeft;
+    padding-right: $mainPaddingRight;
+    padding-top: $headerPaddingTop;
+    padding-bottom: $headerPaddingBottom;
+    border-bottom: 0.5em solid $headerBorderColor;
+    
+    h2 {
+        @include contrasted($headerBackground);
+    }
+    
+    nav {
+        display: block;
+        margin-bottom: -$headerPaddingBottom;
+        
+        ul {
+            margin-bottom: -$navLinkPadding * 4 - 0.15em; // Add a little bit extra for effect
+            list-style: none;
+            
+            li {
+                display: inline-block;
+                margin-bottom: $navLinkPadding * 3;
+                
+                &.spacer {
+                    background: transparent;
+                }
+                
+                a, a:visited {
+                    padding: $navLinkPadding;
+                    @include redGradient;
+                    @include border-radius(0.5em 0.5em 0 0);
+                    color: $navColor;
+                    text-decoration: none;
+                    
+                    &:hover {
+                        color: $link-hover-color !important;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#content {
+    padding-left: $mainPaddingLeft;
+    padding-right: $mainPaddingRight;
+    padding-top: $contentPaddingTop;
+    padding-bottom: $contentPaddingBottom;
+    min-height: $contentMinHeight;
+    @include contentBackground;
+}
+
+// Text Styles
+.left {text-align: left;}
+.center {text-align: center;}
+.right {text-align: right;}
+.small {font-size: small;}
+.large {font-size: large;}
+
+// Misc Global Styles
+@include blueprint-typography;
+
+.vspacer {
+    display: block;
+    height: $vspacer;
+}
+
+table {
+    width: 100%; // Default to full width;
+    //background: $tableBackground;
+    
+    tr:first-child {
+        //background: $trFirstBackground;
+        //@include contrasted($trFirstBackground);
+    }
+    
+    tr.odd {
+        //background: rgba(0,0,0,0.05);
+    }
+    
+    td, th {
+        padding-bottom: $trPaddingBottom;
+        padding-top: $trPaddingTop;
+        padding-left: $trPaddingLeft;
+        padding-right: $trPaddingRight;
+    }
+    
+    th.id {
+        width: 2em;
+    }
+    th.link, td.link {
+        width: 3em;
+        text-align: right;
+    }
+    
+        input {
+                float: none !important;
+        }
+        
+        .checkbox-column {
+                text-align: center;
+        }
+}
+
+.padBottom {
+    padding-bottom: $mainPaddingBottom;
+}
+
+a.button {
+    display: inline-block;
+    background: $buttonBackground;
+    @include contrasted($buttonBackground);
+    padding: $buttonPadding;
+    white-space: nowrap;
+    
+    &, &:visited {
+        text-decoration: none;
+    }
+}
+
+
+@include blueprint-form;
+@include blueprint-form-sizes($input-width,$textarea-width,$textarea-height);
+form {
+    display: inline-block;
+    
+    &.block, textarea {
+        display: block;
+    }
+    
+    input[type=submit] {
+        background: $buttonBackground;
+        @include contrasted($buttonBackground);
+        margin-right: 0;
+        margin-left: auto;
+        width: auto;
+    }
+    input {
+        display: block;
+        width: 100%;
+        
+        &[type=checkbox] {
+            float: right;
+            width: auto;
+            display: inline-block;
+        }
+    }
+    select {
+        width: 100%;
+    }
+        div {
+                &.success input, &.success textarea {
+                        background-color: $successBackground;
+                        border: solid thin $successBorder;
+                }
+                
+                &.validating input, &.validating textarea {
+                        background-color: $validatingBackground;
+                        border: solid thin $validatingBorder;
+                }
+                
+                &.error input, &.error textarea {
+                        background-color: $errorBackground;
+                        border: solid thin $errorBorder;
+                }
+        }
+}
+#ticker {
+        textarea { height: auto; }
+}
+#content {
+        img {
+                max-width: 20em;
+                max-height: 10em;
+        }
+}
+
+/*.formerrors, .error {
+    background: $errorBackground;
+    border: $errorBorder;
+    color: $errorColor;
+    padding: $errorPadding;
+    
+    &:empty {
+        padding: 0;
+        border: none;
+    }
+}*/
+
+// HTML5 dropbox style upload
+#dropbox {
+    @include border-radius(4px);
+    position: relative;
+    min-height: $textarea-height;
+    overflow: hidden;
+    width: $input-width;
+    
+    @include box-shadow();
+    
+    .message {
+        text-align: center;
+        padding-top: $textarea-height / 2;
+        display: block;
+    }
+    
+    .preview {
+        width: $textarea-width / 2 - 0.5em;
+        height: $textarea-height / 2 - 0.5em;
+        margin: 0.25em;
+        float: left;
+        position: relative;
+        text-align: center;
+        
+        img {
+            max-width: $textarea-width / 2 - 0.5em;;
+            max-height: $textarea-height / 2 - 1.5em;;
+            display: block;
+            
+            box-shadow: 0 0 2px #000;
+        }
+        
+        &.done {
+            .uploaded {
+                display: block;
+            }
+            
+            .progress {
+                width: 100% !important;
+            }
+        }
+    }
+    
+    .imageHolder {
+        display: inline-block;
+        position: relative;
+    }
+    
+    .uploaded {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background: rgba(255,255,255,0.5);
+        display: none;
+    }
+    
+    .progressHolder {
+        position: absolute;
+        background-color:#252f38;
+        height:1.5em;
+        width:100%;
+        left:0;
+        bottom: 0;
+
+        box-shadow:0 0 2px #000;
+    }
+    
+    .progress {
+        background-color:#2586d0;
+        position: absolute;
+        height:100%;
+        left:0;
+        width:0;
+
+        box-shadow: 0 0 1px rgba(255, 255, 255, 0.4) inset;
+
+        -moz-transition:0.25s;
+        -webkit-transition:0.25s;
+        -o-transition:0.25s;
+        transition:0.25s;
+    }
+}
+
+/* global classes */
+.content_preview {
+    max-width: 20em;
+    * {
+        max-width: inherit;
+    }
+}

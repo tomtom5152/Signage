@@ -1,0 +1,60 @@
+// Dimensions
+$bodyMinWidth: 40em;
+$asideWidth: 8em;
+$asideLeft: 1em;
+$contentMinHeight: 15em;
+$footerHeight: 3em;
+
+// Spacers
+$vspacer: 1em;
+
+// Margins
+$asideMarginBottom: 1em;
+$mainMarginTop: 1em;
+$mainMarginRight: 1em;
+$mainMarginLeft: 1em;
+
+// Template Padding
+$asidePadding: 0.6em;
+$mainPaddingTop: 1em;
+$mainPaddingRight: 1em;
+$mainPaddingLeft: 12em;
+$mainPaddingBottom: 1em;
+$headerPaddingTop: 1em;
+$headerPaddingBottom: 1em;
+$contentPaddingTop: 2em;
+$contentPaddingBottom: 3em;
+$navLinkPadding: 0.5em;
+// Content Padding
+$errorPadding: 0.2em;
+$buttonPadding: 0.2em;
+$trPaddingTop: 0.5em;
+$trPaddingBottom: 0.5em;
+$trPaddingLeft: 0.25em;
+$trPaddingRight: 0.25em;
+
+// Forms
+$input-width: 30em;
+$textarea-width: 30em;
+$textarea-height: 20em;
+
+// Colours
+$bodyBackground: #e5f2fc;
+$bodyColor: #222222;
+$asideColor: #fefefe;
+$contentBackground: #fefefe;
+$headerBackground: #000000;
+$headerBorderColor: #454545;
+$navColor: #fefefe;
+// Content Colours
+$buttonBackground: #222222;
+$tableBackground: #f4f7df;
+$trFirstBackground: #333333;
+
+// Form Colours
+$successBackground: #e1fcde;
+$successBorder: #3eff28;
+$validatingBackground: #fcf9de;
+$validatingBorder: #ffe928;
+$errorBackground: #fcdede;
+$errorBorder: #ff2828;

@@ -1,0 +1,209 @@
+/*
+Document   : display
+Created on : 01-Jan-2013, 20:50:55
+Author     : pricet
+Description:
+Purpose of the stylesheet follows.
+*/
+
+/*
+TODO customize this sample style
+Syntax recommendation http://sass-lang.com/docs/yardoc/file.SASS_REFERENCE.html
+*/
+
+@import "compass";
+
+root {
+    display: block;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+body {
+    background-color: rgb(169,3,41);
+    @include filter-gradient(#a90329, #6d0019, horizontal);
+    $experimental-support-for-svg: true;
+    @include background-image(radial-gradient(center, ellipse cover,  rgba(169,3,41,1) 0%,rgba(143,2,34,1) 44%,rgba(109,0,25,1) 100%));
+}
+
+$left: 10%;
+$left-width: 60%;
+$gap: 5%;
+$right-width: 100% - $left - $left-width - $gap;
+$top: 5em;
+$radius: 2em;
+$weather: 5.5em;
+
+$white: #fff;
+
+#left, #right {
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+#left {
+    margin-left: $left;
+    width: $left-width;
+    height: 100%;
+    float: left;
+}
+
+#right {
+    width: $right-width;
+    height: 100%;
+    float: right;
+}
+
+#ticker {
+    height: $top;
+    position: relative;
+    z-index: 2;
+    background-color: rgb(0,0,0);
+    @include filter-gradient(#000000, #45484d, vertical);
+    $experimental-support-for-svg: true;
+    @include background-image(linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(69,72,77,1) 100%));
+    @include border-radius($radius);
+    padding-top: $radius;
+    margin-top: -$radius;
+    color: $white;
+    .content {
+        margin: 0.5em 2em;
+        font-size: 120%;
+    }
+}
+#time {
+    height: $top;
+    position: relative;
+    z-index: 2;
+    background-color: rgb(0,0,0);
+    @include filter-gradient(#000000, #45484d, vertical);
+    $experimental-support-for-svg: true;
+    @include background-image(linear-gradient(top,  rgba(0,0,0,1) 0%,rgba(69,72,77,1) 100%));
+    @include border-radius($radius);
+    padding-top: $radius;
+    padding-right: $radius;
+    margin-top: -$radius;
+    margin-right: -$radius;
+    color: $white;
+    .content {
+        margin-top: $top / 5;
+        font-size: 150%;
+        text-align: center;
+        font-weight: bold;
+    }
+}
+#bar {
+    position: absolute;
+    z-index: 1;
+    top: $top;
+    bottom: 0;
+    right: $radius;
+    left: $radius;
+    background: rgba(0,0,0,0.2);
+    
+    #img {
+        height: 100%;
+        width: 100%;
+        /* WebKit (Chrome & Safari) */
+        display: -webkit-box;
+        -webkit-box-pack: center;
+        -webkit-box-align: center;
+
+        /* Firefox */
+        display: -moz-box;
+        -moz-box-pack: center;
+        -moz-box-align: center;
+
+        /* IE */
+        display: -ms-box;
+        -ms-box-pack: center;
+        -ms-box-align: center;
+
+         /* Native CSS */
+        display: box;
+        box-pack: center;
+        box-align: center;
+        padding-bottom: $top;
+        
+        .content {
+            max-height: 100%;
+            max-width: 100%;
+            
+            padding: 1em 1em 2em;
+            
+            img {
+                max-width: 100%;
+                max-height: 90%;
+            }
+        }
+    }
+}
+#text {
+    position: absolute;
+    z-index: 1;
+    top: $top;
+    left: $radius;
+    right: 0;
+    bottom: $weather;
+    .content {
+        position: absolute;
+        font-size: 120%;
+        margin-right: 0.5em;
+    }
+}
+#weather {
+        position: absolute;
+        height: $weather;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        z-index: 2;
+        color: $white;
+        
+        @include filter-gradient(#000000, #45484d, vertical);
+        $experimental-support-for-svg: true;
+        @include background-image(linear-gradient(bottom,  rgba(0,0,0,1) 0%,rgba(69,72,77,1) 100%));
+        @include border-radius($radius);
+        
+        padding: 0 $radius/2 $radius $radius;
+        margin-right: -$radius;
+        margin-bottom: -$radius;
+        
+        .city {
+                font-size: 2em; 
+                display: block;
+        }
+        
+        .curr_text {
+                display: block;
+                font-size: 1.3em;
+        }
+        
+        .curr_temp {
+                font-weight: bold;
+        }
+        
+        .curr_temp, .curr_real {
+                border-right: 0.15em solid $white;
+                margin-right: 0.2em;
+        }
+        
+        .curr_temp, .curr_real, .curr_humid {
+                font-size: 1.2em;
+        }
+        
+        .curr_icon {
+                margin-top: -$weather;
+                img {
+                        max-height: 100%;
+                        float: right;
+                }
+        }
+}
