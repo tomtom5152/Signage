@@ -52,6 +52,7 @@ return array(
     'content_approved'=>'Content Approved',
     'content_start'=>'Start Displaying',
     'content_end'=>'Finish Displaying',
+    'content_rank'=>'Importance Ranking',
     'content_iduser'=>'Submitted By',
     
     'content_type'=>'Content Type',

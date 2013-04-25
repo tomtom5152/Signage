@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Mar 19, 2013 at 12:14 PM
+-- Generation Time: Apr 25, 2013 at 03:20 PM
 -- Server version: 5.5.29
 -- PHP Version: 5.3.10-1ubuntu3.6
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `ci_signage`
+-- Database: `ci_signdev`
 --
 
 -- --------------------------------------------------------
@@ -35,11 +35,28 @@ CREATE TABLE IF NOT EXISTS `signage_content` (
   `approved` tinyint(1) NOT NULL DEFAULT '0',
   `start` date NOT NULL,
   `end` date NOT NULL,
+  `rank` int(1) NOT NULL DEFAULT '3',
   `iduser` int(11) NOT NULL,
   PRIMARY KEY (`idcontent`),
   KEY `idfeeds` (`idfeed`),
   KEY `idusers` (`iduser`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=113 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=402 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `signage_content_display`
+--
+
+CREATE TABLE IF NOT EXISTS `signage_content_display` (
+  `idcontentdisplay` int(11) NOT NULL AUTO_INCREMENT,
+  `idcontent` int(11) NOT NULL,
+  `idscreen` int(11) NOT NULL,
+  `lastshown` int(11) NOT NULL,
+  PRIMARY KEY (`idcontentdisplay`),
+  KEY `idscreen` (`idscreen`),
+  KEY `idcontent` (`idcontent`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -81,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `signage_group_membership` (
   PRIMARY KEY (`idgroupmembership`),
   KEY `idgroup` (`idgroup`),
   KEY `iduser` (`iduser`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 -- --------------------------------------------------------
 
@@ -95,7 +112,7 @@ CREATE TABLE IF NOT EXISTS `signage_screen` (
   `location` varchar(80) DEFAULT NULL,
   `hash` varchar(32) NOT NULL,
   PRIMARY KEY (`idscreen`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 -- --------------------------------------------------------
 
@@ -110,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `signage_screen_feed` (
   PRIMARY KEY (`idscreenfeed`),
   KEY `idscreen` (`idscreen`),
   KEY `idfeed` (`idfeed`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=20 ;
 
 -- --------------------------------------------------------
 
@@ -128,7 +145,7 @@ CREATE TABLE IF NOT EXISTS `signage_user` (
   `isAdmin` smallint(1) NOT NULL,
   PRIMARY KEY (`iduser`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Constraints for dumped tables
@@ -140,6 +157,13 @@ CREATE TABLE IF NOT EXISTS `signage_user` (
 ALTER TABLE `signage_content`
   ADD CONSTRAINT `signage_content_ibfk_2` FOREIGN KEY (`idfeed`) REFERENCES `signage_feed` (`idfeed`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `signage_content_ibfk_3` FOREIGN KEY (`iduser`) REFERENCES `signage_user` (`iduser`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `signage_content_display`
+--
+ALTER TABLE `signage_content_display`
+  ADD CONSTRAINT `signage_content_display_ibfk_1` FOREIGN KEY (`idcontent`) REFERENCES `signage_content` (`idcontent`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `signage_content_display_ibfk_2` FOREIGN KEY (`idscreen`) REFERENCES `signage_screen` (`idscreen`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `signage_feed`

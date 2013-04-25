@@ -46,22 +46,22 @@ class ContentController extends Controller
         {
                 if(Yii::app()->user->isGuest) {
                         $this->render('guest');
-                        return;
+                } else {
+                
+                        $model=Content::model();
+
+                        // Get some different counts
+                        $currentCount = $model->count('start<=CURDATE() AND end>=CURDATE() AND approved=1');
+                        $approvedCount = $model->count('start>CURDATE() AND end>=CURDATE() AND approved=1');
+                        $moderateCount = $model->count('end>=CURDATE() AND approved=0');
+
+                        // Show these counts for to the user
+                        $this->render('index', array(
+                                'currentCount'=>$currentCount,
+                                'approvedCount'=>$approvedCount,
+                                'moderateCount'=>$moderateCount,
+                        ));
                 }
-                
-                $model=Content::model();
-                
-                // Get some different counts
-                $currentCount = $model->count('start<=CURDATE() AND end>=CURDATE() AND approved=1');
-                $approvedCount = $model->count('start>CURDATE() AND end>=CURDATE() AND approved=1');
-                $moderateCount = $model->count('end>=CURDATE() AND approved=0');
-                
-                // Show these counts for to the user
-                $this->render('index', array(
-                        'currentCount'=>$currentCount,
-                        'approvedCount'=>$approvedCount,
-                        'moderateCount'=>$moderateCount,
-                ));
         }
         
         /**

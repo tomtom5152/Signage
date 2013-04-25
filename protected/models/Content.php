@@ -12,11 +12,13 @@
  * @property integer $approved
  * @property string $start
  * @property string $end
+ * @property integer $rank
  * @property integer $iduser
  *
  * The followings are the available model relations:
- * @property User $iduser0
  * @property Feed $idfeed0
+ * @property User $iduser0
+ * @property ContentDisplay[] $contentDisplays
  */
 class Content extends CActiveRecord
 {
@@ -50,14 +52,15 @@ class Content extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('idfeed, content_type, content, duration, iduser', 'required'),
-			array('idfeed, duration, approved, iduser', 'numerical', 'integerOnly'=>true),
+			array('idfeed, duration, approved, rank, iduser', 'numerical', 'integerOnly'=>true),
                         array('start, end', 'date', 'format'=>array('yyyy-MM-dd')),
                         array('end','compare','compareAttribute'=>'start','operator'=>'>=', 'allowEmpty'=>false , 'message'=>'{attribute} must be greater than "{compareValue})".'),
 			array('content_type', 'length', 'max'=>6),
                         array('duration', 'numerical', 'min'=>1),
+                        array('rank', 'numerical', 'min'=>1, 'max'=>5),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('idcontent, idfeed, content, content_type, duration, approved, start, end, iduser', 'safe', 'on'=>'search'),
+			array('idcontent, idfeed, content, content_type, duration, approved, start, end, rank, iduser', 'safe', 'on'=>'search'),
                         // content type checks
                         array('content', 'length', 'max'=>140, 'on'=>'ticker'),
                         array('img', 'required', 'on'=>'img'),
@@ -73,8 +76,9 @@ class Content extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'iduser0' => array(self::BELONGS_TO, 'User', 'iduser'),
 			'idfeed0' => array(self::BELONGS_TO, 'Feed', 'idfeed'),
+            'iduser0' => array(self::BELONGS_TO, 'User', 'iduser'),
+            'contentDisplays' => array(self::HAS_MANY, 'ContentDisplay', 'idcontent'),
 		);
 	}
 
@@ -92,6 +96,7 @@ class Content extends CActiveRecord
 			'approved' => Yii::t('signage','content_approved'),
 			'start' => Yii::t('signage','content_start'),
 			'end' => Yii::t('signage','content_end'),
+            'rank' => Yii::t('signage','content_rank'),
 			'iduser' => Yii::t('signage','content_iduser'),
 		);
 	}
@@ -115,6 +120,7 @@ class Content extends CActiveRecord
 		$criteria->compare('approved',$this->approved);
 		$criteria->compare('start',$this->start,true);
 		$criteria->compare('end',$this->end,true);
+        $criteria->compare('rank',$this->rank);
 		$criteria->compare('iduser',$this->iduser);
 
 		return new CActiveDataProvider($this, array(

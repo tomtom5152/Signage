@@ -26,6 +26,12 @@ $required=(isset($bulk) && $bulk == true)?null:'required';
 </div>
 
 <div class="row">
+		<?php echo $form->labelEx($model,'rank'); ?>
+		<?php echo $form->numberField($model,'rank',array('required'=>$required,'min'=>'1','max'=>'5')); ?>
+		<?php echo $form->error($model,'rank'); ?>
+</div>
+
+<div class="row">
         <?php echo $form->labelEx($model,'idfeed'); ?>
         <?php echo $form->dropDownList($model,
                 'idfeed',

@@ -56,6 +56,10 @@ Yii::app()->clientScript->registerCssFile($assets.'/css/display.css');
                             })
                         }
                         setTimeout(function(){loadContent($e)}, data.duration*1000);
+                    },
+                    error: function() {
+		                    // retry in 5 seconds
+		                    setTimeout(funtion(){loadContent($e)}, 5000)
                     }
                 });
             }

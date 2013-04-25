@@ -45,6 +45,7 @@ $form=$this->beginWidget('CActiveForm', array(
             'name'=>'iduser',
             'value'=>'$data->iduser0->firstname." ".$data->iduser0->lastname',
         ),
+		'rank',
         array(
             'class'=>'CButtonColumn',
             'template'=>'{update}{delete}',

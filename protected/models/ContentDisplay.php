@@ -1,24 +1,24 @@
 <?php
 
 /**
- * This is the model class for table "{{screen}}".
+ * This is the model class for table "{{content_display}}".
  *
- * The followings are the available columns in table '{{screen}}':
+ * The followings are the available columns in table '{{content_display}}':
+ * @property integer $idcontentdisplay
+ * @property integer $idcontent
  * @property integer $idscreen
- * @property string $screenname
- * @property string $location
- * @property string $hash
+ * @property integer $lastshown
  *
  * The followings are the available model relations:
- * @property ContentDisplay[] $contentDisplays
- * @property ScreenFeed[] $screenFeeds
+ * @property Screen $idscreen0
+ * @property Content $idcontent0
  */
-class Screen extends CActiveRecord
+class ContentDisplay extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Screen the static model class
+	 * @return ContentDisplay the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -30,7 +30,7 @@ class Screen extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{screen}}';
+		return '{{content_display}}';
 	}
 
 	/**
@@ -41,12 +41,11 @@ class Screen extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('hash', 'required'),
-			array('screenname, location', 'length', 'max'=>80),
-			array('hash', 'length', 'max'=>32),
+			array('idcontent, idscreen, lastshown', 'required'),
+			array('idcontent, idscreen, lastshown', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('idscreen, screenname, location, hash', 'safe', 'on'=>'search'),
+			array('idcontentdisplay, idcontent, idscreen, lastshown', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -58,8 +57,8 @@ class Screen extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-            'contentDisplays' => array(self::HAS_MANY, 'ContentDisplay', 'idscreen'),
-			'screenFeeds' => array(self::HAS_MANY, 'ScreenFeed', 'idscreen'),
+			'idscreen0' => array(self::BELONGS_TO, 'Screen', 'idscreen'),
+			'idcontent0' => array(self::BELONGS_TO, 'Content', 'idcontent'),
 		);
 	}
 
@@ -69,10 +68,10 @@ class Screen extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'idscreen' => Yii::t('signage','idscreen'),
-			'screenname' => Yii::t('signage','screenname'),
-			'location' => Yii::t('signage','screenlocation'),
-			'hash' => Yii::t('signage','screenhash'),
+			'idcontentdisplay' => 'Idcontentdisplay',
+			'idcontent' => 'Idcontent',
+			'idscreen' => 'Idscreen',
+			'lastshown' => 'Lastshown',
 		);
 	}
 
@@ -87,13 +86,21 @@ class Screen extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+		$criteria->compare('idcontentdisplay',$this->idcontentdisplay);
+		$criteria->compare('idcontent',$this->idcontent);
 		$criteria->compare('idscreen',$this->idscreen);
-		$criteria->compare('screenname',$this->screenname,true);
-		$criteria->compare('location',$this->location,true);
-		$criteria->compare('hash',$this->hash,true);
+		$criteria->compare('lastshown',$this->lastshown);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+    /**
+     * Calculates the time since a piece of content was last shown on a specific screen
+     * @return int time the number of seconds since this peice of content was last shown on this screen
+     */
+    public function timeSinceLast() {
+        return time() - $this->lastshown;
+    }
 }

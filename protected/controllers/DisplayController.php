@@ -38,10 +38,9 @@ class DisplayController extends Controller
                 $hash = Yii::app()->request->cookies->contains('screenhash') ?
                         Yii::app()->request->cookies['screenhash']->value : false;
                 
-                if(!$hash || !Yii::app()->request->isAjaxRequest)
+                if(!$hash /*|| !Yii::app()->request->isAjaxRequest*/)
                         throw new CHttpException(403,'This action is only allowed via AJAX with a saved screen hash.');
-                
-                $screen;
+
                 $screen = Screen::model()->findByAttributes(array('hash'=>$hash));
                 $output = new stdClass();
                 
@@ -95,22 +94,75 @@ class DisplayController extends Controller
                                                 ':date'=>date('Y-m-d'),
                                         ),
                                 ));
-                                
+
                                 if(!empty($content)) {
-                                        shuffle($content);
-                                        $toShow = $content[0];
-                                        
-                                        if($type=='img') {
-                                                $output->content = '<img src="'.Yii::app()->getAssetManager()->publish("protected/assets/content/img/{$toShow->content}").'" />';
-                                        } else {
-                                                $output->content = $toShow->content;
-                                        }
-                                        $output->duration = $toShow->duration;
+		                                $defaultRank = 0;
+		                                foreach($content as $c) {
+				                                $defaultRank += $c->duration * $c->rank;
+		                                }
+
+		                                $weightings = array();
+		                                $contentDisplays = array();
+		                        	    foreach($content as $c) {
+					                            $contentDisplay = ContentDisplay::model()->findByAttributes(
+							                            array(
+									                            'idcontent' => $c->idcontent,
+									                            'idscreen' => $screen->idscreen,
+							                            )
+					                            );
+
+					                            if(empty($contentDisplay)) {
+							                            $weightings[$c->idcontent] = $c->rank * $defaultRank;
+					                            } else {
+							                            $weightings[$c->idcontent] = $c->rank * $contentDisplay->timeSinceLast();
+					                            }
+					                            $contentDisplays[$c->idcontent] = $contentDisplay;
+			                            }
+
+		                                $idcontent = Randomness::array_rand_weighted($weightings);
+
+		                                $toShow = Content::model()->findByAttributes(array(
+				                                'idcontent'=>$idcontent,
+		                                ));
+
+		                                if(empty($contentDisplays[$idcontent])) {
+				                                $contentDisplay = new ContentDisplay;
+				                                $contentDisplay->idcontent = $idcontent;
+				                                $contentDisplay->idscreen = $screen->idscreen;
+				                                $contentDisplay->lastshown = time();
+				                                $contentDisplay->save();
+		                                } else {
+				                                $contentDisplay = $contentDisplays[$idcontent];
+				                                $contentDisplay->lastshown = time();
+				                                $contentDisplay->save();
+		                                }
+
+		                                if($type=='img') {
+				                                $output->content = '<img src="'.Yii::app()->getAssetManager()->publish("protected/assets/content/img/{$toShow->content}").'" />';
+		                                } else {
+				                                $output->content = $toShow->content;
+		                                }
+		                                $output->duration = $toShow->duration;
                                 } else {
-                                        $output->content = '';
-                                        $output->duration = 5;
+		                                $content->content = '';
+		                                $output->duration = 5;
                                 }
-                                break;
+
+//                                if(!empty($content)) {
+//                                        shuffle($content);
+//                                        $toShow = $content[0];
+//                                        
+//                                        if($type=='img') {
+//                                                $output->content = '<img src="'.Yii::app()->getAssetManager()->publish("protected/assets/content/img/{$toShow->content}").'" />';
+//                                        } else {
+//                                                $output->content = $toShow->content;
+//                                        }
+//                                        $output->duration = $toShow->duration;
+//                                } else {
+//                                        $output->content = '';
+//                                        $output->duration = 5;
+//                                }
+//                                break;
                 }
                 echo json_encode($output);
         }
