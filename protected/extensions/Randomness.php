@@ -288,4 +288,17 @@ class Randomness
             array('+' => '_', '/' => '~')
         );
     }
+
+		/**
+		 * Takes a key=>value array and returns a random key based on the weighting in the value.
+		 * @param $values A key value pair
+		 * @return int|string The random key after weighting
+		 */
+		function array_rand_weighted($values) {
+				$r = mt_rand(1, array_sum($values));
+				foreach ($values as $item => $weight) {
+						if  ($r <= $weight) return $item;
+						$r -= $weight;
+				}
+		}
 }
